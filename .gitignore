@@ -1,0 +1,5 @@
+dmgc
+dmgc.debug
+*.o
+*.gb
+*.sav
