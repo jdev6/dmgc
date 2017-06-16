@@ -82,7 +82,7 @@ void mem_free(void) {
 
 uint8_t* mem_get_ptr(uint16_t addr) {
 	#define range(l, u) (addr >= (l) && addr <= (u))
-	#define UNIMPLEMENTED return NULL
+	#define UNIMPLEMENTED {dprintf("WARNING: addr %.4X unimplemented", addr); return NULL;}
 
 	//rom bank 0
 	if (range(0x0000, 0x3FFF))
@@ -98,7 +98,7 @@ uint8_t* mem_get_ptr(uint16_t addr) {
 
 	//TODO: external ram
 	else if (range(0xA000, 0xBFFF))
-		UNIMPLEMENTED;
+		UNIMPLEMENTED
 
 	//work ram
 	else if (range(0xC000, 0xDFFF))
@@ -110,7 +110,7 @@ uint8_t* mem_get_ptr(uint16_t addr) {
 
 	//TODO: oam
 	else if (range(0xFE00, 0xFE9F))
-		UNIMPLEMENTED;
+		UNIMPLEMENTED
 	
 	//nintendo marcked this as unusable..
 	else if (range(0xFEA0, 0xFEFF))
@@ -118,7 +118,7 @@ uint8_t* mem_get_ptr(uint16_t addr) {
 
 	//I/O ports
 	else if (range(0xFF00, 0xFF7F))
-		UNIMPLEMENTED;
+		UNIMPLEMENTED
 
 	//HRAM
 	else if (range(0xFF80, 0xFFFE))
@@ -128,6 +128,7 @@ uint8_t* mem_get_ptr(uint16_t addr) {
 	else if (addr == 0xFFFF)
 		return &iereg;
 
+	dprintf("WARNING: addr %.4X returns NULL", addr);
 	return NULL;
 	#undef range
 	#undef UNIMPLEMENTED
@@ -142,6 +143,11 @@ uint8_t mem_read(uint16_t addr) {
 	return *ptr;
 }
 
+uint16_t mem_read_word(uint16_t addr) {
+	uint8_t lsb = mem_read(addr);
+	return (mem_read(addr+1) << 8) | lsb;
+}
+
 void mem_write(uint16_t addr, uint8_t value) {
 	uint8_t* ptr = mem_get_ptr(addr);
 	if (ptr == NULL) {
@@ -149,4 +155,9 @@ void mem_write(uint16_t addr, uint8_t value) {
 		return;
 	}
 	*ptr = value;
+}
+
+void mem_write_word(uint16_t addr, uint16_t value) {
+	mem_write(addr, value & 0xFF);
+	mem_write(addr+1, (value & 0xFF00) >> 8);
 }

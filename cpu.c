@@ -35,6 +35,7 @@ uint8_t* REG_H = registers+7;
 uint8_t* REG_L = registers+6;
 
 uint8_t cpu_halted = 0;
+uint8_t cpu_stopped = 0;
 unsigned int cpu_cycles = 0;
 
 void cpu_cycle(void) {

@@ -1,331 +1,88 @@
-#define opcode(op, name, wath) case op: dprintf("PC:%.4X: %s", *REG_PC, name); wath; break
-#define cycles cpu_cycles+=
-
-opcode(0x00, "NOP", {
-	cycles 4;
-});
-
-#define LD_r_n(r) *REG_##r = mem_read((*REG_PC)++)
-
-opcode(0x06, "LD B,n", {
-	LD_r_n(B);
-	cycles 8;
-});
-
-opcode(0x0E, "LD C,n", {
-	LD_r_n(C);
-	cycles 8;
-});
-
-opcode(0x16, "LD D,n", {
-	LD_r_n(D);
-	cycles 8;
-});
-
-opcode(0x1E, "LD E,n", {
-	LD_r_n(E);
-	cycles 8;
-});
-
-opcode(0x26, "LD H,n", {
-	LD_r_n(H);
-	cycles 8;
-});
-
-opcode(0x2E, "LD L,n", {
-	LD_r_n(L);
-	cycles 8;
-});
-
-//atr = (r)
-
-#define LD_r_r(r1,r2) *REG_##r1 = *REG_##r2
-#define LD_atr_r(atr,r) mem_write(*REG_##atr, *REG_##r)
-#define LD_r_atr(r,atr) *REG_##r = mem_read(*REG_##atr)
-
-opcode(0x7F, "LD A,A", {
-	//LD_r_r(A,A);
-	cycles 4;
-});
-
-opcode(0x78, "LD A,B", {
-	LD_r_r(A,B);
-	cycles 4;
-});
-
-opcode(0x79, "LD A,C", {
-	LD_r_r(A,C);
-	cycles 4;
-});
-
-opcode(0x7A, "LD A,D", {
-	LD_r_r(A,D);
-	cycles 4;
-});
-
-opcode(0x7B, "LD A,E", {
-	LD_r_r(A,E);
-	cycles 4;
-});
-
-opcode(0x7C, "LD A,H", {
-	LD_r_r(A,H);
-	cycles 4;
-});
-
-opcode(0x7D, "LD A,L", {
-	LD_r_r(A,L);
-	cycles 4;
-});
-
-opcode(0x7E, "LD A,(HL)", {
-	LD_r_atr(A,HL);
-	cycles 8;
-});
-
-opcode(0x40, "LD B,B", {
-	//LD_r_r(r,t);
-	cycles 4;
-});
-
-opcode(0x41, "LD B,C", {
-	LD_r_r(B,C);
-	cycles 4;
-});
-
-opcode(0x42, "LD B,D", {
-	LD_r_r(B,D);
-	cycles 4;
-});
-
-opcode(0x43, "LD B,E", {
-	LD_r_r(B,E);
-	cycles 4;
-});
-
-opcode(0x44, "LD B,H", {
-	LD_r_r(B,H);
-	cycles 4;
-});
-
-opcode(0x45, "LD B,L", {
-	LD_r_r(B,L);
-	cycles 4;
-});
-
-opcode(0x46, "LD B,(HL)", {
-	LD_r_atr(B,HL);
-	cycles 8;
-});
-
-opcode(0x48, "LD C,B", {
-	LD_r_r(C,B);
-	cycles 4;
-});
-
-opcode(0x49, "LD C,C", {
-	//LD_r_r(C,C);
-	cycles 4;
-});
-
-opcode(0x4A, "LD C,D", {
-	LD_r_r(C,D);
-	cycles 4;
-});
-
-opcode(0x4B, "LD C,E", {
-	LD_r_r(C,E);
-	cycles 4;
-});
-
-opcode(0x4C, "LD C,H", {
-	LD_r_r(C,H);
-	cycles 4;
-});
-
-opcode(0x4D, "LD C,L", {
-	LD_r_r(C,L);
-	cycles 4;
-});
-
-opcode(0x4E, "LD C,(HL)", {
-	LD_r_atr(C,HL);
-	cycles 8;
-});
-
-opcode(0x50, "LD D,B", {
-	LD_r_r(D,B);
-	cycles 4;
-});
-
-opcode(0x51, "LD D,C", {
-	LD_r_r(D,C);
-	cycles 4;
-});
-
-opcode(0x52, "LD D,D", {
-	//LD_r_r(D,C);
-	cycles 4;
-});
-
-opcode(0x53, "LD D,E", {
-	LD_r_r(D,E);
-	cycles 4;
-});
-
-opcode(0x54, "LD D,H", {
-	LD_r_r(D,H);
-	cycles 4;
-});
-
-opcode(0x55, "LD D,L", {
-	LD_r_r(D,L);
-	cycles 4;
-});
-
-opcode(0x56, "LD D,(HL)", {
-	LD_r_atr(D,HL);
-	cycles 8;
-});
-
-opcode(0x58, "LD E,B", {
-	LD_r_r(E,B);
-	cycles 4;
-});
-
-opcode(0x59, "LD E,C", {
-	LD_r_r(E,C);
-	cycles 4;
-});
-
-opcode(0x5A, "LD E,D", {
-	LD_r_r(E,D);
-	cycles 4;
-});
-
-opcode(0x5B, "LD E,E", {
-//	LD_r_r(E,E);
-	cycles 4;
-});
-
-opcode(0x5C, "LD E,H", {
-	LD_r_r(E,H);
-	cycles 4;
-});
-
-opcode(0x5D, "LD E,L", {
-	LD_r_r(E,L);
-	cycles 4;
-});
-
-opcode(0x5E, "LD E,(HL)", {
-	LD_r_atr(E,HL);
-	cycles 8;
-});
-
-opcode(0x60, "LD H,B", {
-	LD_r_r(H,B);
-	cycles 4;
-});
-
-opcode(0x61, "LD H,C", {
-	LD_r_r(H,C);
-	cycles 4;
-});
-
-opcode(0x62, "LD H,D", {
-	LD_r_r(H,D);
-	cycles 4;
-});
-
-opcode(0x63, "LD H,E", {
-	LD_r_r(H,E);
-	cycles 4;
-});
-
-opcode(0x64, "LD H,H", {
-	//LD_r_r(H,H);
-	cycles 4;
-});
-
-opcode(0x65, "LD H,L", {
-	LD_r_r(H,L);
-	cycles 4;
-});
-
-opcode(0x66, "LD H,(HL)", {
-	LD_r_atr(H,HL);
-	cycles 8;
-});
-
-opcode(0x68, "LD L,B", {
-	LD_r_r(L,B);
-	cycles 4;
-});
-
-opcode(0x69, "LD L,C", {
-	LD_r_r(L,C);
-	cycles 4;
-});
-
-opcode(0x6A, "LD L,D", {
-	LD_r_r(L,D);
-	cycles 4;
-});
-
-opcode(0x6B, "LD L,E", {
-	LD_r_r(L,E);
-	cycles 4;
-});
-
-opcode(0x6C, "LD L,H", {
-	LD_r_r(L,H);
-	cycles 4;
-});
-
-opcode(0x6D, "LD L,L", {
-	//LD_r_r(L,L);
-	cycles 4;
-});
-
-opcode(0x6E, "LD L,(HL)", {
-	LD_r_atr(L,HL);
-	cycles 8;
-});
-
-
-opcode(0x70, "LD (HL),B", {
-	LD_atr_r(HL,B);
-	cycles 8;
-});
-
-opcode(0x71, "LD (HL),C", {
-	LD_atr_r(HL,C);
-	cycles 8;
-});
-
-opcode(0x72, "LD (HL),D", {
-	LD_atr_r(HL,D);
-	cycles 8;
-});
-
-opcode(0x73, "LD (HL),E", {
-	LD_atr_r(HL,E);
-	cycles 8;
-});
-
-opcode(0x74, "LD (HL),H", {
-	LD_atr_r(HL,B);
-	cycles 8;
-});
-
-opcode(0x75, "LD (HL),L", {
-	LD_atr_r(HL,B);
-	cycles 8;
-});
-
-opcode(0x36, "LD (HL),n", {
-	mem_write(*REG_HL, mem_read((*REG_PC)++));
-	cycles 12;
-});
-
+#define op(n, cc, instr, ...) case n: dprintf("pc: %.4X -> %s %s", *REG_PC, #instr, #__VA_ARGS__); {instr(__VA_ARGS__);} cpu_cycles += cc; break
+
+//flags
+#define RESET_FLAGS *(REG_F.value) = 0
+#define flag(f) ((REG_F).flags->f)
+#define fzero(a) flag(z) = (a) == 0 //set if a is 0
+#define fhalfcarry8(a,b) flag(h) = (((((a) & 0xF) + ((b) & 0xF)) & 0x10) == 0x10 ) //carry from bit 3 to bit 4
+#define fhalfcarry16(a,b) flag(h) = (((((a) & 0xFFF) + ((b) & 0xFFF)) & 0x1000) == 0x1000 ) //carry from bit 11 to bit 12
+#define fcarry(a) flag(c) = (a) > 0xFF //carry
+
+//immediate values and other..
+#define d8  mem_get_ptr((*REG_PC)++)
+#define d16 (uint16_t*)d8
+#define a16 mem_get_ptr(*d16)
+#define AT(reg) mem_get_ptr(*(reg))
+
+//INSTructions
+#define NOP()
+#define STOP() cpu_stopped = 1
+#define LD(a,b) *(a) = *(b)
+#define INC_16(a) (*(a))++
+#define INC_8(a) fzero((*(a))++); flag(n) = 0; fhalfcarry8(*(a), *(a)-1)
+#define DEC_16(a) (*(a))--
+#define DEC_8(a) fzero((*(a))--); flag(n) = 1; fhalfcarry8(*(a), *(a)+1)
+#define RLC(a) RESET_FLAGS; uint8_t bit7 = !!(*(a) & 0x80); fzero( (*(a)) = ((*(a)) << 1) | bit7 ); flag(c) = bit7
+#define RL(a) RESET_FLAGS; uint8_t c = flag(c); flag(c) = !!((*(a)) && 0x80); fzero( (*(a)) = (((*(a)) << 1) | c ) );
+#define RRC(a) RESET_FLAGS; uint8_t bit0 = !!(*(a) & 0x01); fzero( (*(a)) = ((*(a)) >> 1) | bit0 ); flag(c) = bit0
+#define RR(a) RESET_FLAGS; uint8_t c = flag(c); flag(c) = !!((*(a)) && 0x01); fzero( (*(a)) = (((*(a)) >> 1) | (c << 7) ) );
+#define ADD_16(a,b) fhalfcarry16(*(a), *(b)); (*(a)) += (*(b)); flag(n) = 0; flag(c) = (*(a)) > 0xFFFF
+#define JR() *REG_PC += (int8_t)mem_read(*REG_PC)+1
+#define JR_nf(f) if (!flag(f)) {JR();}
+#define JR_f(f) if (flag(f)) {JR();}
+inline void DAA(void) {
+	//TODO DADADADAaa
+}
+#define LD_A_ATHL(sign) LD(REG_A, AT(REG_HL)); *REG_HL = sign 1
+#define LD_ATHL_A(sign) LD(AT(REG_HL), REG_A); *REG_HL = sign 1
+#define CPL() *REG_A = ~*REG_A
+
+//OPCODES decoding
+op(0x00, 4,  NOP);
+op(0x01, 12, LD, REG_BC, d16);
+op(0x02, 8,  LD, AT(REG_BC), REG_A);
+op(0x03, 8,  INC_16, REG_BC);
+op(0x04, 4,  INC_8, REG_B);
+op(0x05, 4,  DEC_8, REG_B);	
+op(0x06, 8,  LD, REG_B, d8);
+op(0x07, 4,  RLC, REG_A);
+op(0x08, 20, LD, a16, REG_SP);
+op(0x09, 8,  ADD_16, REG_HL, REG_BC);
+op(0x0A, 8,  LD, REG_A, AT(REG_BC));
+op(0x0B, 8,  DEC_16, REG_BC);
+op(0x0C, 4,  INC_8, REG_C);
+op(0x0D, 4,  DEC_8, REG_C);
+op(0x0E, 8,  LD, REG_C, d8);
+op(0x0F, 4,  RRC, REG_A);
+op(0x10, 4,  STOP);
+op(0x11, 12, LD, REG_DE, d16);
+op(0x12, 8,  LD, AT(REG_DE), REG_A);
+op(0x13, 8,  INC_16, REG_DE);
+op(0x14, 4,  INC_8, REG_D);
+op(0x15, 4,  DEC_8, REG_D);
+op(0x16, 8,  LD, REG_D, d8);
+op(0x17, 4,  RL, REG_A);
+op(0x18, 12, JR);
+op(0x19, 8,  ADD_16, REG_HL, REG_DE);
+op(0x1A, 8,  LD, REG_A, AT(REG_DE));
+op(0x1B, 8,  DEC_16, REG_DE);
+op(0x1C, 4,  INC_8, REG_E);
+op(0x1D, 4,  DEC_8, REG_E);
+op(0x1E, 8,  LD, REG_E, d8);
+op(0x1F, 4,  RR, REG_A);
+op(0x20, 8,  JR_nf, z);
+op(0x21, 12, LD, REG_HL, d16);
+op(0x22, 8,  LD_ATHL_A, +);
+op(0x23, 8,  INC_16, REG_HL);
+op(0x24, 4,  INC_8, REG_H);
+op(0x25, 4,  DEC_8, REG_H);
+op(0x26, 8,  LD, REG_H, d8);
+op(0x27, 4,  DAA);
+op(0x28, 8,  JR_f, z);
+op(0x29, 8,  ADD_16, REG_HL, REG_HL);
+op(0x2A, 8,  LD_A_ATHL, +);
+op(0x2B, 8,  DEC_16, REG_HL);
+op(0x2C, 4,  INC_8, REG_L);
+op(0x2D, 4,  DEC_8, REG_L);
+op(0x2E, 8,  LD, REG_L, d8);
+op(0x2F, 4,  CPL);
