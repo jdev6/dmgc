@@ -39,7 +39,7 @@ uint8_t cpu_stopped = 0;
 unsigned int cpu_cycles = 0;
 
 void cpu_cycle(void) {
-	if (cpu_halted) {
+	if (cpu_halted || cpu_stopped) {
 		cpu_cycles++;
 		return;
 	}
